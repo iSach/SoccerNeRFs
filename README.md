@@ -58,7 +58,7 @@ A slightly modified version of K-Planes is implemented. Please have a look at `n
 
 ### NeRFPlayer
 
-NeRFPlayer is originally implemented in Nerfstudio as its truncated version, which we consider (`nerfstudio-nerfacto`). Additionally, we reimplemented the full version of NeRFplayer, with the decomposition, which was not really helpful here.
+NeRFPlayer is originally implemented in Nerfstudio as its truncated version, which we consider (`nerfplayer-nerfacto`). Additionally, we reimplemented the full version of NeRFplayer, with the decomposition, which was not really helpful here.
 
 Please have a look at `nerfstudio/nerfstudio/nerfplayer[-nerfacto].py` for more information on the settings for both versions.
 
