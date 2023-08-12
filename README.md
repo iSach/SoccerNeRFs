@@ -67,7 +67,7 @@ Please have a look at `nerfstudio/nerfstudio/nerfplayer[-nerfacto].py` for more 
 ### **Nerfstudio**
 Some contributions were already made public, but most of the work was done separately in this repository, to save time and avoid conflicts. Indeed, Nerfstudio is still in _active development_. Due to time constraints, we were not able to make it stable and well documented to be ready for pull requests.
 
-However, the code was implemented to follow the structure of Nerfstudio as much as possible! This means that the code is very modular and should be easily adapted to new Nerfstudio versions, which might be done in the future. I still tried to document the code as I could for easier understand in case somebody wants to use it! :)
+However, the code was implemented to follow the structure of Nerfstudio as much as possible! This means that the code is very modular and should be easily adapted to new Nerfstudio versions, which might be done in the future. Nonetheless, we tried to document the code as much as possible.
 
 The code was last merged with the main branch of Nerfstudio with the version `0.1.19`. The `nerfstudio` folder corresponds to the actual repository (i.e., [Official Nerfstudio Repo](https://github.com/nerfstudio-project/nerfstudio)), with all changes being in `nerfstudio/nerfstudio`.
 
