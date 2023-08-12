@@ -1,15 +1,17 @@
-# **Exploring Dynamic NeRFs for Reconstructing Soccer Scenes**
+# **Dynamic NeRFs for Soccer Scenes**
 
-This repository contains the code of my master's thesis, titled "Exploring Dynamic NeRFs for Reconstructing Soccer Scenes", conducted from 6th Feb to 9th June 2023.
+This repository contains the code for the paper "Dynamic NeRFs for Soccer Scenes", by Sacha Lewin, Maxime Vandegar, Thomas Hoyoux, Olivier Barnich, and Gilles Louppe.
+
+This paper was accepted at the 6th Int. Workshop on Multimedia Content Analysis in Sports (MMSports'23) @ ACM Multimedia 2023, and will be presented on 29th October.
 
 ## **Abstract**
-In computer vision, novel view synthesis refers to generating new views of an environment from unseen viewpoints, given only a set of images and possibly associated camera poses. This long-standing problem is often tackled by building an underlying 3D model that can then be rendered from new angles. Neural radiance fields (NeRFs), a recent neural method using this approach, brought groundbreaking results compared to previous techniques. The problem can be extended to _4D scene reconstruction_ where the scene is _dynamic_. Solving this even more complex problem could lead to many applications, especially in the considered context of broadcast sequences, such as special effects, bullet time, and more. Sports environments are rarely tackled yet exhibit particular characteristics as they are often composed of small dynamic parts in a large static environment (e.g., players in a stadium). This thesis explores how current state-of-the-art dynamic NeRF models perform in such environments, seeking to assess their applicability and identify crucial components that should be the focus of future work. Various experiments are performed in four environments, including real-world conditions. Although satisfactory performance can be reached in synthetic environments, we show they currently drastically fail in real-world conditions and require additional assumptions to work. However, promising directions are identified toward practical applications.
+The long-standing problem of novel view synthesis has many applications, notably in sports broadcasting. Photorealistic novel view synthesis of soccer actions, in particular, is of enormous interest to the broadcast industry. Yet only a few industrial solutions have been proposed, and even fewer that achieve near-broadcast quality of the synthetic replays. Except for their setup of multiple static cameras around the playfield, the best proprietary systems disclose close to no information about their inner workings. Leveraging multiple static cameras for such a task indeed presents a challenge rarely tackled in the literature, for a lack of public datasets: the reconstruction of a large-scale, mostly static environment, with small, fast-moving elements. Recently, the emergence of neural radiance fields has induced stunning progress in many novel view synthesis applications, leveraging deep learning principles to produce photorealistic results in the most challenging settings. In this work, we investigate the feasibility of basing a solution to the task on dynamic NeRFs, i.e., neural models purposed to reconstruct general dynamic content. We compose synthetic soccer environments and conduct multiple experiments using them, identifying key components that help reconstruct soccer scenes with dynamic NeRFs. We show that, although this approach cannot fully meet the quality requirements for the target application, it suggests promising avenues toward a cost-efficient, automatic solution. We also make our work dataset and code publicly available, with the goal to encourage further efforts from the research community on the task of novel view synthesis for dynamic soccer scenes.
 
 ## **Running the code**
 
-All experiments were carried out in a Docker container, with a custom image. If you're from EVS, the image is available at `evs-innovation-snapshot-docker.artifactory.evs.tv/nerfstudio:slew-latest`. 
+All experiments were carried out in a Docker container. We recommend following the instructions on https://docs.nerf.studio
 
-Otherwise, install Python 3.8, PyTorch 1.13.1, and CUDA 11.7.
+Otherwise, you can install Python 3.8, PyTorch 1.13.1, and CUDA 11.7.
 Next, install [tiny-cuda-nn](https://github.com/NVlabs/tiny-cuda-nn), and the bindings for Torch:
 ```
 pip install ninja git+https://github.com/NVlabs/tiny-cuda-nn/#subdirectory=bindings/torch
@@ -26,32 +28,44 @@ Install the CLI completion:
 ns-install-cli
 ```
 
-Nerfstudio should be ready to use, otherwise have a look at the [official documentation](https://docs.nerf.studio/).
+Nerfstudio should be ready to use, otherwise we again recommend to have a look at the [official documentation](https://docs.nerf.studio/).
 
-Running a model is very easy. For example, running K-Planes with a new scale (32x), modified importance sampling, and downscaling FPS by 4 on the "Synthetic Player" Scene, and visualizing through the online viewer:
+Running a model is very easy. For example, running K-Planes with a new scale (32x), modified importance sampling, and downscaling FPS by 4 on the "Broadcast-style" Scene, and visualizing through the online viewer:
 ```bash
 ns-train k-planes \                                   # Train K-Planes
     --vis viewer \                                    # Use the viewer
     --pipeline.model.multiscale-res 1 2 4 8 16 32 \   # New scale (32x)
     --pipeline.datamanager.ist-range 0.75 \           # Modified IST Range
-    synthpaderborn-data \                             # Dataset
+    broadcaststyle-data \                             # Dataset
     --fps-downsample 4                                # Read 1 frame every 4
 ```
 
 Default models can require large amounts of VRAM for running, so feel free to tune down the default settings if you have a GPU with less than 12GB.
 
+## Data (Soon)
+
+The three considered datasets will be released shortly on a drive. Due to the license of Adobe Mixamo, the Blender files cannot be redistributed publicly, so we only include the training images and poses.
+
+*Link to come soon*
+
+## Models
+
+This section describes the two models considered, and how to use them with our code. (WIP)
+
+### K-Planes
+
+A slightly modified version of K-Planes is implemented. Please have a look at `nerfstudio/nerfstudio/kplanes.py` for more information on the settings.
+
+### NeRFPlayer
+
+NeRFPlayer is originally implemented in Nerfstudio as its truncated version, which we consider (`nerfstudio-nerfacto`). Additionally, we reimplemented the full version of NeRFplayer, with the decomposition, which was not really helpful here.
+
+Please have a look at `nerfstudio/nerfstudio/nerfplayer[-nerfacto].py` for more information on the settings for both versions.
+
 ## **Repository structure**
 
-### **Omitted files**
-Some files are omitted from the repository, mainly due to their size. If you're from EVS, they should still be stored in my personal folder on ahl01 (`students/slew`).
-* `blender` folder: contains the Blender projects used to generate the synthetic data. It is omitted due to its size (~200GB).
-* `data` folder: contains the data used in the experiments. It is omitted due to its size (~800GB).
-* `outputs` folder: contains the models checkpoints. It is omitted due to its size (~1.5TB).
-* `renders` folder: contains many renders. It is omitted due to its size (600MB).
-* `assets/vid` folder: contains the renders in the YT videos. Same as renders.
-
 ### **Nerfstudio**
-Some contributions were already made public, but most of the work was done in this private repository. Indeed, Nerfstudio is still in _active development_. Due to time constraints, I was not able to make it stable and well documented to be ready for pull requests. I decided it was not worth spending weeks of time during the thesis for that. Additionally, I wanted to be sure new Nerfstudio updates (like 0.2.0) would not break my code.
+Some contributions were already made public, but most of the work was done separately in this repository, to save time and avoid conflicts. Indeed, Nerfstudio is still in _active development_. Due to time constraints, we were not able to make it stable and well documented to be ready for pull requests.
 
 However, the code was implemented to follow the structure of Nerfstudio as much as possible! This means that the code is very modular and should be easily adapted to new Nerfstudio versions, which might be done in the future. I still tried to document the code as I could for easier understand in case somebody wants to use it! :)
 
@@ -64,7 +78,7 @@ Main modifications include:
 * __`utils`__: New dynamic metric in `dynmetric.py`, can be easily integrated by any model inside of the `get_image_metrics_and_images` function. 
 * __`data/datasets`__: New dynamic dataset class (`dynamic_dataset.py`) for dynamic scenes with optional depth. This class computes and caches importance sampling maps, more details below.
 * __`data/datamanagers`__: Dynamic datamanager for generating dynamic datasets from any data parser that outputs time and possibly depth. Simply replace the vanilla manager by the dynamic one in a method config to use it.
-* __`data/dataparsers`__: New data parsers for the experiment environments: `stadium_`, `stadiumplayers_`, `synthpaderborn_`, `paderborn_dataparser.py`, plus a more generic one (`dynamic_dataparser.py`) as an example. They were tuned for the experiments but it is possible to make a single generic parser. :) Also, a data parser for HyperNeRF is included (`hypernerf_dataparser.py`), as experiments were planned on it, but not done in the end.
+* __`data/dataparsers`__: New data parsers for the experiment environments: `closeup_`, `broadcaststyle_`, `stadiumwide_dataparser.py`, plus a more generic one (`dynamic_dataparser.py`) as an example. They were tuned for the experiments but it is possible to make a single generic parser. :) Also, a data parser for HyperNeRF is included (`hypernerf_dataparser.py`), as experiments were planned on it, but not done in the end.
 * __`data`__: In `pixel_samplers.py`, importance sampling is implemented using the pre-computed weight maps in `dynamic_dataset.py`. This supports any method as long as the dynamic data manager is used, which makes it very easy to use and follows Nerfstudio's format.
 
 ### **Importance Sampling**
@@ -80,3 +94,14 @@ Feel free to check any experiment file to see how it works.
 ### **Scripts**
 
 The `scripts` folder contains various scripts that were used to manipulate datasets and create figures in the thesis. Each file has a header which documents what it does but remember these are simple scripts, and are not intended as clean and documented code.
+
+## Citation
+
+```bib
+@inproceedings{lewin2023dynamic,
+    title={Dynamic Ne{RF}s for Soccer Scenes},
+    author={Sacha Lewin and Maxime Vandegar and Thomas Hoyoux and Olivier Barnich and Gilles Louppe},
+    booktitle={6th Int. Workshop on Multimedia Content Analysis in Sports (MMSports'23) @ ACM Multimedia 2023},
+    year={2023},
+}
+```
