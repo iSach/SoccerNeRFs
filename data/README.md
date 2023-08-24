@@ -65,6 +65,7 @@ dataparsers = {
 	"closeup-data": CloseupDataParserConfig(),
 	"broadcaststyle-data": BroadcaststyleDataParserConfig(),
 	"stadiumwide-data": StadiumwideDataParserConfig(),
+}
 ```
 
 Afterward, you can use them as detailed above.
