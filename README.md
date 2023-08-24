@@ -2,12 +2,16 @@
 
 This repository contains the code for the paper "Dynamic NeRFs for Soccer Scenes", by Sacha Lewin, Maxime Vandegar, Thomas Hoyoux, Olivier Barnich, and Gilles Louppe.
 
-This paper was accepted at the 6th Int. Workshop on Multimedia Content Analysis in Sports (MMSports'23) @ ACM Multimedia 2023, and will be presented on 29th October.
+This paper was accepted at the [6th Int. Workshop on Multimedia Content Analysis in Sports (MMSports'23) @ ACM Multimedia 2023](http://mmsports.multimedia-computing.de/mmsports2023/index.html), and will be presented on 29th October.
 
 ## **Abstract**
 The long-standing problem of novel view synthesis has many applications, notably in sports broadcasting. Photorealistic novel view synthesis of soccer actions, in particular, is of enormous interest to the broadcast industry. Yet only a few industrial solutions have been proposed, and even fewer that achieve near-broadcast quality of the synthetic replays. Except for their setup of multiple static cameras around the playfield, the best proprietary systems disclose close to no information about their inner workings. Leveraging multiple static cameras for such a task indeed presents a challenge rarely tackled in the literature, for a lack of public datasets: the reconstruction of a large-scale, mostly static environment, with small, fast-moving elements. Recently, the emergence of neural radiance fields has induced stunning progress in many novel view synthesis applications, leveraging deep learning principles to produce photorealistic results in the most challenging settings. In this work, we investigate the feasibility of basing a solution to the task on dynamic NeRFs, i.e., neural models purposed to reconstruct general dynamic content. We compose synthetic soccer environments and conduct multiple experiments using them, identifying key components that help reconstruct soccer scenes with dynamic NeRFs. We show that, although this approach cannot fully meet the quality requirements for the target application, it suggests promising avenues toward a cost-efficient, automatic solution. We also make our work dataset and code publicly available, with the goal to encourage further efforts from the research community on the task of novel view synthesis for dynamic soccer scenes.
 
-## **Running the code**
+## Data
+
+Please see [here](data/README.md).
+
+## Running the code
 
 All experiments were carried out in a Docker container. We recommend following the instructions on https://docs.nerf.studio
 
@@ -42,15 +46,7 @@ ns-train k-planes \                                   # Train K-Planes
 
 Default models can require large amounts of VRAM for running, so feel free to tune down the default settings if you have a GPU with less than 12GB.
 
-## Data (Soon)
-
-The three considered datasets will be released shortly on a drive. Due to the license of Adobe Mixamo, the Blender files cannot be redistributed publicly, so we only include the training images and poses.
-
-*Link to come soon*
-
 ## Models
-
-This section describes the two models considered, and how to use them with our code. (WIP)
 
 ### K-Planes
 
