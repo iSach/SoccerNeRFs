@@ -9,7 +9,7 @@ The long-standing problem of novel view synthesis has many applications, notably
 
 ## Data
 
-Please see [here](data/README.md).
+Please see [here](data/).
 
 ## Running the code
 
