@@ -14,7 +14,7 @@
 """ 
 Adapted data parser for dynamic nerfstudio-based dataset. 
 
-EXPERIMENT 2: SYNTHETIC PLAYERS (WIDE-ANGLE CAMERAS)
+Scene 3: Stadium-wide Views
 """
 
 from __future__ import annotations
@@ -80,12 +80,12 @@ def get_cam_id(cam_name: str) -> int:
 
 
 @dataclass
-class StadiumPlayersDataParserConfig(DataParserConfig):
+class StadiumwideDataParserConfig(DataParserConfig):
     """Paderborn dataset config"""
 
-    _target: Type = field(default_factory=lambda: StadiumPlayers)
+    _target: Type = field(default_factory=lambda: Stadiumwide)
     """target class to instantiate"""
-    data: Path = Path("data/stadium_players/")
+    data: Path = Path("data/stadiumwide/")
     """Directory or explicit json file path specifying location of data."""
     scale_factor: float = 1.0
     """How much to scale the camera origins by."""
@@ -118,10 +118,10 @@ class StadiumPlayersDataParserConfig(DataParserConfig):
 
 
 @dataclass
-class StadiumPlayers(DataParser):
+class Stadiumwide(DataParser):
     """Paderborn DatasetParser"""
 
-    config: StadiumPlayersDataParserConfig
+    config: StadiumwideDataParserConfig
     downscale_factor: Optional[int] = None
 
     def __get_frame_metadata(self, fname: Path) -> tuple[int, int]:

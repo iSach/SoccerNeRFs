@@ -21,6 +21,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple, Type, Literal
 
+import functools
 import numpy as np
 import torch
 import torch.nn as nn
@@ -346,7 +347,12 @@ class KPlanesModel(Model):
         return callbacks
 
     def get_outputs(self, ray_bundle: RayBundle):
-        ray_samples, weights_list, ray_samples_list = self.proposal_sampler(ray_bundle, density_fns=self.density_fns)
+        density_fns = self.density_fns
+        if ray_bundle.times is not None:
+            density_fns = [functools.partial(f, times=ray_bundle.times) for f in density_fns]
+        ray_samples, weights_list, ray_samples_list = self.proposal_sampler(
+            ray_bundle, density_fns=density_fns
+        )
         field_out = self.field(ray_samples)
 
         weights = ray_samples.get_weights(field_out[FieldHeadNames.DENSITY])

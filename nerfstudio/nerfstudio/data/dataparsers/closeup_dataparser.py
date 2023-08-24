@@ -14,7 +14,7 @@
 """ 
 Adapted data parser for dynamic nerfstudio-based dataset. 
 
-EXPERIMENT 4: REAL DATA
+Scene 1: Close-up Views.
 """
 
 from __future__ import annotations
@@ -44,50 +44,154 @@ CONSOLE = Console(width=120)
 MAX_AUTO_RESOLUTION = 1600
 
 CAM_IDS = {
-    "hbg": 0,
-    "main": 1,
-    "left": 2,
-    "right": 3,
+    "HBG": 0,
+    "Left": 1,
+    "Right": 2,
+    "Main": 3,
+    "HBG_opp": 4,
+    "Left_opp": 5,
+    "Right_opp": 6,
+    "Main_opp": 7,
+    "Inter_1": 8,
+    "Inter_2": 9,
+    "Inter_3": 10,
+    "Inter_4": 11,
+    "Inter_5": 12,
+    "Inter_6": 13,
+    "Inter_7": 14,
+    "Inter_8": 15,
+    "Inter_9": 16,
+    "Inter_10": 17,
+    "Inter_11": 18,
+    "Inter_12": 19,
+    "global_1": 20,
+    "global_2": 21,
+    "global_3": 22,
+    "global_4": 23,
+    "global_5": 24,
+    "global_6": 25,
+    "global_7": 26,
+    "global_8": 27,
+    "Zoom1": 28,
+    "Zoom2": 29,
+    "Zoom3": 30,
+    "Zoom4": 31,
+    "Zoom5": 32,
+    "Zoom6": 33,
+    "Zoom7": 34,
+    "Zoom8": 35,
+    "Zoom9": 36,
+    "Zoom10": 37,
+    "Zoom11": 38,
+    "Zoom12": 39,
+    "Zoom13": 40,
+    "Zoom14": 41,
+    "Zoom15": 42,
+    "Zoom16": 43,
+    "Zoom17": 44,
+    "Zoom18": 45,
+    "Zoom19": 46,
+    "Zoom20": 47,
+    "Zoom21": 48,
+    "Zoom22": 49,
+    "Zoom23": 50,
+    "Zoom24": 51,
+    "Zoom25": 52,
+    "Zoom26": 53,
+    "Zoom27": 54,
+    "Zoom28": 55,
+    "Zoom29": 56,
+    "Zoom30": 57,
+}
+
+"""
+List of possible train/eval split setups.
+"""
+SETUPS = {
+    "zoom": {
+        "train": [
+            "Zoom1",
+            "Zoom2",
+            "Zoom3",
+            "Zoom4",
+            "Zoom5",
+            "Zoom6",
+            "Zoom7",
+            "Zoom8",
+            "Zoom9",
+            "Zoom10",
+            "Zoom11",
+            "Zoom12",
+            "Zoom13",
+            "Zoom14",
+            "Zoom15",
+            "Zoom16",
+            "Zoom17",
+            "Zoom18",
+            "Zoom19",
+            "Zoom20",
+            "Zoom21",
+            "Zoom22",
+            "Zoom23",
+            "Zoom24",
+            "Zoom25",
+            "Zoom26",
+            "Zoom27",
+            "Zoom28",
+            "Zoom29",
+        ],
+        "eval": [
+            "Zoom30",
+        ],
+    },
 }
 
 
 @dataclass
-class PaderbornDataParserConfig(DataParserConfig):
-    """Paderborn dataset config"""
+class CloseupDataParserConfig(DataParserConfig):
+    """Closeup dataset config"""
 
-    _target: Type = field(default_factory=lambda: Paderborn)
+    _target: Type = field(default_factory=lambda: Closeup)
     """target class to instantiate"""
-    data: Path = Path("data/paderborn/")
+    data: Path = Path("data/closeup/")
     """Directory or explicit json file path specifying location of data."""
     scale_factor: float = 1.0
     """How much to scale the camera origins by."""
     downscale_factor: Optional[int] = 2
     """How much to downscale images. If not set, images are chosen such that the max dimension is <1600px."""
-    scene_scale: float = 1.0
+    scene_scale: float = 1.5
     """How much to scale the region of interest by."""
     orientation_method: Literal["pca", "up", "vertical", "none"] = "none"
     """The method to use for orientation."""
-    center_method: Literal["poses", "focus", "none"] = "none"
+    center_method: Literal["poses", "focus", "none"] = "focus"
     """The method to use to center the poses."""
     auto_scale_poses: bool = True
     """Whether to automatically scale the poses to fit in +/- 1 bounding box."""
-    train_split_percentage: float = 1.0  # Corresponds to 105 cameras
-    """The percent of images to use for training. The remaining images are for eval."""
     depth_unit_scale_factor: float = 0.01
     """Scales the depth values to meters. Default value is 0.001 for a millimeter to meter conversion."""
-    depth_maps_to_use: Literal[
-        "od", "od_below", "ist", "mask", "mask_below", "old_mask", "old_mask_below", "field"
-    ] = "mask"
-    """What depth map mask to use."""
-    cap_box_floor: bool = True
+    depth_maps: Literal["depth-maps", "depth-maps_field", "none"] = "none"
+    """Depth maps to use. Default is full, but can also use field only."""
+    depth_mask: Literal["none", "od", "od_below", "ist", "mask", "mask_below", "field"] = "mask"
+    """Which depth maps mask to use."""
+    cam_split_setup: Literal["real", "real+opp", "low", "global", "zoom"] = "zoom"
+    """Which setup to use for train/eval split."""
+    cap_box_floor: bool = False
     """Whether to use a rectangular scene box by setting floor to -0.01"""
+    static: bool = False
+    """Whether to use static views."""
+    static_allimgs: bool = False
+    """If static&empty(step=-1), whether or not to use time indices. If false, only use first images (1 per cam)."""
+    static_timestep: int = -1
+    """If static, which time step to use. If -1, use empty field"""
+    fps_downsample: float = 4.0
+    """How much to downsample the fps by. 1.0 is no downsample, 2.0 is half the fps."""
 
 
 @dataclass
-class Paderborn(DataParser):
+class Closeup(DataParser):
     """Paderborn DatasetParser"""
 
-    config: PaderbornDataParserConfig
+    config: CloseupDataParserConfig
     downscale_factor: Optional[int] = None
 
     def __get_frame_metadata(self, fname: Path) -> tuple[int, int]:
@@ -111,6 +215,9 @@ class Paderborn(DataParser):
 
     def _generate_dataparser_outputs(self, split="train"):
         # pylint: disable=too-many-statements
+
+        if self.config.static and self.config.static_timestep == -1:
+            self.config.data = self.config.data.parent / "closeup_empty/"
 
         if self.config.data.suffix == ".json":
             meta = load_from_json(self.config.data)
@@ -147,6 +254,13 @@ class Paderborn(DataParser):
 
         cam_uids = []
 
+        setup_split = "train" if split == "train" else "eval"
+        other_split = "eval" if setup_split == "train" else "train"
+        split_cams = SETUPS[self.config.cam_split_setup][setup_split]
+        split_cams = [CAM_IDS[cam] for cam in split_cams]
+        other_split_cams = SETUPS[self.config.cam_split_setup][other_split]
+        other_split_cams = [CAM_IDS[cam] for cam in other_split_cams]
+
         for frame in meta["frames"]:
             filepath = PurePath(frame["file_path"])
             fname = self._get_fname(filepath, data_dir)
@@ -157,31 +271,18 @@ class Paderborn(DataParser):
             # Parse file name
             cam_id, time_step = self.__get_frame_metadata(fname)
 
-            # Check for the camera location
-            # Split fname until last hyphen
-            """
-            if fname_split != self.config.camera_location:
+            if cam_id not in split_cams and cam_id not in other_split_cams:
+                # Better camera scaling when ignoring other cameras (global here)
                 continue
-            """
-            """
-             if cam_id not in [5]:
-                continue
-            """
-            """
-            if frame_loc in ["Right-Ext Right", "Op Right-Op Middle"]:
-                continue
-            if frame_loc == "High Behind Right-Ext Op Right":
-                if cam_id not in [0, 7]:
-                    continue
-            elif frame_loc in ["Left-Middle", "Op Left-Ext Op Left"]:
-                if cam_id != 4:
-                    continue
-            else:
-                if cam_id not in [0, 6]:
-                    continue
-            """
-            cam_uids.append(cam_id)
 
+            if self.config.static and not self.config.static_allimgs:
+                if self.config.static_timestep == -1:
+                    if time_step != 0:
+                        continue
+                elif time_step != self.config.static_timestep:
+                    continue
+
+            cam_uids.append(cam_id)
             # Append camera time
             times.append(time_step)
 
@@ -226,10 +327,13 @@ class Paderborn(DataParser):
                 )
                 mask_filenames.append(mask_fname)
 
-            if "depth_file_path" in frame:
-                depthfilepath = frame["depth_file_path"].replace(
-                    "depth-maps", "depth-maps-" + self.config.depth_maps_to_use
-                )
+            if "depth_file_path" in frame and self.config.depth_maps != "none":
+                depth_mask = self.config.depth_mask
+                depthfilepath = frame["depth_file_path"]
+                if depth_mask != "none":
+                    depthfilepath = depthfilepath.replace("depth-maps", "depth-maps-" + depth_mask)
+                if self.config.depth_maps != "depth-maps":
+                    depthfilepath = depthfilepath.replace("depth-maps", self.config.depth_maps)
                 depth_filepath = PurePath(depthfilepath)
                 depth_fname = self._get_fname(depth_filepath, data_dir, downsample_folder_prefix="depths_")
                 depth_filenames.append(depth_fname)
@@ -255,38 +359,17 @@ class Paderborn(DataParser):
         You should check that depth_file_path is specified for every frame (or zero frames) in transforms.json.
         """
 
+        # Filter FPS downsample
+        times_filter = np.arange(max(times) + 1)
+        if not self.config.static and self.config.fps_downsample > 1:
+            base_duration = max(times) + 1  # Starts at 0
+            new_duration = int(base_duration / self.config.fps_downsample)
+            times_filter = np.linspace(0, base_duration - 1, new_duration).astype(np.int32)
+
         # Select frame indices that correspond to the selected cameras
         indices = []
         for i in range(len(image_filenames)):
-            # 0 * 201 for hbg
-            # 1 * 201 for left
-            # 2 * 201 for main
-            # 3 * 201 for right
-            eval_is = [
-                0 * 201 + 0,
-                1 * 201 + 10,
-                2 * 201 + 20,
-                3 * 201 + 30,
-                0 * 201 + 40,
-                1 * 201 + 50,
-                2 * 201 + 60,
-                3 * 201 + 70,
-                0 * 201 + 80,
-                1 * 201 + 90,
-                2 * 201 + 100,
-                3 * 201 + 110,
-                0 * 201 + 120,
-                1 * 201 + 130,
-                2 * 201 + 140,
-                3 * 201 + 150,
-                0 * 201 + 160,
-                1 * 201 + 170,
-                2 * 201 + 180,
-                3 * 201 + 190,
-            ]
-            if i in eval_is and split in ["test", "val"]:
-                indices.append(i)
-            elif i not in eval_is and split in ["train"]:
+            if cam_uids[i] in split_cams and times[i] in times_filter:
                 indices.append(i)
 
         if "orientation_override" in meta:
@@ -320,9 +403,10 @@ class Paderborn(DataParser):
         # assumes that the scene is centered at the origin
         aabb_scale = self.config.scene_scale
         if self.config.cap_box_floor:
+            # 0 gives artifacts.
             scene_box = SceneBox(
                 aabb=torch.tensor(
-                    [[-aabb_scale, -aabb_scale, -0.01], [aabb_scale, aabb_scale, aabb_scale]], dtype=torch.float32
+                    [[-aabb_scale, -aabb_scale, -0.1], [aabb_scale, aabb_scale, aabb_scale]], dtype=torch.float32
                 )
             )
         else:
@@ -344,7 +428,10 @@ class Paderborn(DataParser):
         cy = float(meta["cy"]) if cy_fixed else torch.tensor(cy, dtype=torch.float32)[idx_tensor]
         height = int(meta["h"]) if height_fixed else torch.tensor(height, dtype=torch.int32)[idx_tensor]
         width = int(meta["w"]) if width_fixed else torch.tensor(width, dtype=torch.int32)[idx_tensor]
-        times = torch.tensor(times, dtype=torch.float32)[idx_tensor] / max(times)  # Include time in Camera
+        if max(times) != 0:
+            times = torch.tensor(times, dtype=torch.float32)[idx_tensor] / max(times)  # Include time in Camera
+        else:
+            times = torch.tensor(times, dtype=torch.float32)[idx_tensor]
         ids = torch.tensor(cam_uids, dtype=torch.float32)[idx_tensor]  # Include id in Camera
         if distort_fixed:
             distortion_params = camera_utils.get_distortion_params(
@@ -358,6 +445,12 @@ class Paderborn(DataParser):
         else:
             distortion_params = torch.stack(distort, dim=0)[idx_tensor]
 
+        """
+        For pre-training on static scenes, we should intuitively not give any time step information to the network.
+        However, K-Planes will then not initialize time planes, therefore instead it is preferable to give time
+        in order to have 6 planes, but freeze them (model option).
+        """
+        # if not self.config.static or (self.config.static and self.config.static_timestep == -1 and self.config.static_allimgs):
         cameras = Cameras(
             fx=fx,
             fy=fy,
@@ -385,6 +478,7 @@ class Paderborn(DataParser):
             metadata={
                 "depth_filenames": depth_filenames if len(depth_filenames) > 0 else None,
                 "depth_unit_scale_factor": self.config.depth_unit_scale_factor,
+                "static": self.config.static,
             },
         )
         return dataparser_outputs

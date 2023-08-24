@@ -57,9 +57,9 @@ from nerfstudio.data.dataparsers.sdfstudio_dataparser import SDFStudioDataParser
 from nerfstudio.data.dataparsers.sitcoms3d_dataparser import Sitcoms3DDataParserConfig
 from nerfstudio.data.dataparsers.stadium_dataparser import StadiumDataParserConfig
 from nerfstudio.data.dataparsers.hypernerf_dataparser import HyperNeRFDataParserConfig
-from nerfstudio.data.dataparsers.paderborn_dataparser import PaderbornDataParserConfig
-from nerfstudio.data.dataparsers.synthpaderborn_dataparser import SynthPaderbornDataParserConfig
-from nerfstudio.data.dataparsers.stadiumplayers_dataparser import StadiumPlayersDataParserConfig
+from nerfstudio.data.dataparsers.closeup_dataparser import CloseupDataParserConfig
+from nerfstudio.data.dataparsers.broadcaststyle_dataparser import BroadcaststyleDataParserConfig
+from nerfstudio.data.dataparsers.stadiumwide_dataparser import StadiumwideDataParserConfig
 from nerfstudio.data.datasets.base_dataset import InputDataset
 from nerfstudio.data.pixel_samplers import (
     EquirectangularPixelSampler,
@@ -95,10 +95,9 @@ AnnotatedDataParserUnion = tyro.conf.OmitSubcommandPrefixes[  # Omit prefixes of
             "stadium-data": StadiumDataParserConfig(),
             "sitcoms3d-data": Sitcoms3DDataParserConfig(),
             "hypernerf-data": HyperNeRFDataParserConfig(),
-            "paderborn-data": PaderbornDataParserConfig(),
-            "synthpaderborn-data": SynthPaderbornDataParserConfig(),
-            "dynamic-data": DynamicDataParserConfig(),
-            "stadiumplayers-data": StadiumPlayersDataParserConfig(),
+            "closeup-data": CloseupDataParserConfig(),
+            "broadcaststyle-data": BroadcaststyleDataParserConfig(),
+            "stadiumwide-data": StadiumwideDataParserConfig(),
         },
         prefix_names=False,  # Omit prefixes in subcommands themselves.
     )

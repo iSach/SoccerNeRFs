@@ -406,6 +406,31 @@ class KPlanesDensityField(Field):
             },
         )
 
+    # pylint: disable=arguments-differ
+    def density_fn(self, positions: TensorType["bs":..., 3], times: TensorType["bs", 1]) -> TensorType["bs":..., 1]:
+        """Returns only the density. Used primarily with the density grid.
+
+        Args:
+            positions: the origin of the samples/frustums
+            times: the time of rays
+        """
+        if len(positions.shape) == 3 and len(times.shape) == 2:
+            # position is [ray, sample, 3]; times is [ray, 1]
+            times = times[:, None]  # RaySamples can handle the shape
+        # Need to figure out a better way to descibe positions with a ray.
+        ray_samples = RaySamples(
+            frustums=Frustums(
+                origins=positions,
+                directions=torch.ones_like(positions),
+                starts=torch.zeros_like(positions[..., :1]),
+                ends=torch.zeros_like(positions[..., :1]),
+                pixel_area=torch.ones_like(positions[..., :1]),
+            ),
+            times=times,
+        )
+        density, _ = self.get_density(ray_samples)
+        return density
+
     def get_density(self, ray_samples: RaySamples):
         positions = ray_samples.frustums.get_positions()
         if self.spatial_distortion is not None:

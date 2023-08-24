@@ -12,15 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """ 
-Adapted data parser for dynamic nerfstudio-based dataset. 
-
-EXPERIMENT 3: SYNTHETIC PLAYER (CLOSE CAMERAS)
-
-Images are the the following format:
-    CamName_step.png
-Where:
-    loc: location of the camera (28 positions, see CAM_IDS)
-    step: step in the sequence ([[0, 200]])
+Scene 2: Broadcast-style views
 """
 
 from __future__ import annotations
@@ -209,12 +201,12 @@ SETUPS = {
 
 
 @dataclass
-class SynthPaderbornDataParserConfig(DataParserConfig):
-    """Paderborn dataset config"""
+class BroadcaststyleDataParserConfig(DataParserConfig):
+    """Broadcast-Style dataset config"""
 
-    _target: Type = field(default_factory=lambda: SynthPaderborn)
+    _target: Type = field(default_factory=lambda: Broadcaststyle)
     """target class to instantiate"""
-    data: Path = Path("data/synth_paderborn/")
+    data: Path = Path("data/broadcaststyle/")
     """Directory or explicit json file path specifying location of data."""
     scale_factor: float = 1.0
     """How much to scale the camera origins by."""
@@ -249,10 +241,10 @@ class SynthPaderbornDataParserConfig(DataParserConfig):
 
 
 @dataclass
-class SynthPaderborn(DataParser):
-    """Paderborn DatasetParser"""
+class Broadcaststyle(DataParser):
+    """Broadcaststyle DatasetParser"""
 
-    config: SynthPaderbornDataParserConfig
+    config: BroadcaststyleDataParserConfig
     downscale_factor: Optional[int] = None
 
     def __get_frame_metadata(self, fname: Path) -> tuple[int, int]:
@@ -278,7 +270,7 @@ class SynthPaderborn(DataParser):
         # pylint: disable=too-many-statements
 
         if self.config.static and self.config.static_timestep == -1:
-            self.config.data = self.config.data.parent / "synth_paderborn_empty/"
+            self.config.data = self.config.data.parent / "broadcaststyle_empty/"
 
         if self.config.data.suffix == ".json":
             meta = load_from_json(self.config.data)
