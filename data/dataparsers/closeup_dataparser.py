@@ -105,7 +105,7 @@ CAM_IDS = {
 }
 
 """
-List of possible train/eval split setups.
+List of possible train / eval split setups.
 """
 SETUPS = {
     "zoom": {
