@@ -4,23 +4,25 @@
 
 The data consists of 3 synthetic scenes built using Blender. Each scene contains from 20 to 30 synchronized and calibrated cameras that capture a 4-second long scene at 25 FPS. For each scene, the downloadable data consists of images and corresponding poses. These are ready to use either with our code, either with Nerfstudio using the slightly different data parsers available in this folder.
 
+All the scenes can be downloaded [here](https://github.com/iSach/SoccerNeRFs/releases/tag/1.0).
+
 ### Close-up
 
 This synthetic environment features a single player placed at the center of the field, shooting a ball. This first camera setup is composed of 30 close-up views around the player and resembles typical conditions of benchmarks like DyNeRF. Models should work pretty fine with no changes in this setup.
 
-[[Download (Soon)](#)] [[Video Results](https://soccernerfs.isach.be/assets/closeup.mp4)]
+[[Download](https://github.com/iSach/SoccerNeRFs/releases/download/1.0/closeup.tar.gz)] [[Video Results](https://soccernerfs.isach.be/assets/closeup.mp4)]
 
 ### Broadcast-style
 
 Within the same environment as close-up, we consider a second camera configuration that features 20 views placed around the field, whose field of view is close to broadcast conditions. The player represents only a tiny portion of the images. Satisfying results are much harder to obtain in this setup. 1080p training and ray importance sampling substantially improve results.
 
-[[Download (Soon)](#)] [[Video Results]()]
+[[Download](https://github.com/iSach/SoccerNeRFs/releases/download/1.0/broadcaststyle.tar.gz)] [[Video Results](https://soccernerfs.isach.be/assets/broadcaststyle.mp4)]
 
 ### Stadium-wide
 
 This more complex environment features several players and balls interacting all over the field, captured by 30 wide-angle cameras placed high up in the bleachers and are thus much more distant from the field. Six additional cameras, used exclusively for evaluation, are placed near the players for more meaningful results. In this setup, training views cover the whole field at all times but cover very few details about the players and balls due to their large distance. This scene is extremely challenging, and finding more advanced strategies to accurately reconstruct them would be interesting.
 
-[[Download (Soon)](#)] [[Video Results]()]
+[[Download](https://github.com/iSach/SoccerNeRFs/releases/download/1.0/stadiumwide.tar.gz)] [[Video Results](https://soccernerfs.isach.be/assets/stadiumwide.mp4)]
 
 ## Stadium Model
 
