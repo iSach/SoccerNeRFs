@@ -9,7 +9,7 @@ import os
 from tqdm import tqdm
 from pathlib import Path
 
-data_folder = Path("/workspace/data/stadium_players/")
+data_folder = Path("/Users/sach/Library/Mobile Documents/com~apple~CloudDocs/Cours/PhD/soccernerfs_paper/data/stadiumwide/")
 include_depth = False
 
 # Read per-cam transforms file
@@ -22,9 +22,9 @@ for cam_dict in per_cam_transforms["frames"]:
     cam_transforms[cam_name] = cam_dict
 frames = []
 
-pbar = tqdm(total=len(os.listdir(data_folder / "images/1x/")), position=0, leave=True)
+pbar = tqdm(total=len(os.listdir(data_folder / "images/2x/")), position=0, leave=True)
 # Read frames files in "images/1x/" folder
-for filename in os.listdir(data_folder / "images/1x/"):
+for filename in os.listdir(data_folder / "images/2x/"):
     if filename.endswith(".png"):
         cam_name = filename.rsplit("_", 1)[0]
         frame_dict = cam_transforms[cam_name].copy()
