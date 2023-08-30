@@ -4,7 +4,7 @@
 
 The data consists of 3 synthetic scenes built using Blender. Each scene contains from 20 to 30 synchronized and calibrated cameras that capture a 4-second long scene at 25 FPS. For each scene, the downloadable data consists of images and corresponding poses. These are ready to use either with our code, either with Nerfstudio using the slightly different data parsers available in this folder.
 
-All the scenes can be downloaded [here](https://github.com/iSach/SoccerNeRFs/releases/tag/1.0).
+All the scenes can be downloaded [here](https://github.com/iSach/SoccerNeRFs/releases/tag/1.0). For video results of all the scenes, see [here](https://youtu.be/DpQRf1nheKk).
 
 ### Close-up
 
