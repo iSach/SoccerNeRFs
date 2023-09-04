@@ -89,7 +89,7 @@ Feel free to check any experiment file to see how it works.
 
 ### **Scripts**
 
-The `scripts` folder contains various scripts that were used to manipulate datasets and create figures in the thesis. Each file has a header which documents what it does but remember these are simple scripts, and are not intended as clean and documented code.
+The `scripts` folder contains various scripts that were used to manipulate datasets and create figures in the paper. Each file has a header which documents what it does but remember these are simple scripts, and are not intended as clean and documented code.
 
 ## Citation
 
