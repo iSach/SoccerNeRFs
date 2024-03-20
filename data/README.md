@@ -26,7 +26,7 @@ This more complex environment features several players and balls interacting all
 
 ## Stadium Model
 
-The stadium model is freely available (CC0) on [BlendSwap](https://www.blendswap.com/blend/7488). 
+The stadium model is freely available (CC0) on [BlendSwap](https://www.blendswap.com/blend/10567). 
 
 ## Player Models
 
