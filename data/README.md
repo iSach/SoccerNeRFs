@@ -26,7 +26,7 @@ This more complex environment features several players and balls interacting all
 
 ## Stadium Model
 
-The stadium model is freely available (CC0) on [BlendSwap](https://www.blendswap.com/blend/10567). 
+The stadium model is freely available (CC0) on [BlendSwap](https://www.blendswap.com/blend/10567). For a more realistic grass texture, you can use our modified verson [downloadable here](https://cdn.isach.be/textured_grass.blend). You can also find a Blender file with our stadium-wide cameras [here](https://cdn.isach.be/stadiumwide.blend), but please note this version was not cleaned or reorganized, and might be hard to manipulate, so we recommend starting from the other clean version, depending on your needs.
 
 ## Player Models
 
