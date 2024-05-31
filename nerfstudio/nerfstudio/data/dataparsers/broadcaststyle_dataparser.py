@@ -157,36 +157,28 @@ SETUPS = {
     },
     "all": {
         "train": [
-            "HBG",
-            "Left",
-            "Right",
-            "Main",
-            "HBG_opp",
-            "Left_opp",
-            "Right_opp",
-            "Main_opp",
-            "Inter_1",
-            "Inter_2",
-            "Inter_3",
-            "Inter_4",
-            "Inter_5",
-            "Inter_6",
-            "Inter_7",
-            "Inter_9",
-            "Inter_10",
-            "Inter_11",
-            "Inter_12",
-            "global_1",
-            "global_2",
-            "global_3",
-            "global_4",
-            "global_5",
-            "global_6",
-            "global_7",
-            "global_8",
+            "Camera_1",
+            "Camera_2",
+            "Camera_3",
+            "Camera_4",
+            "Camera_5",
+            "Camera_6",
+            "Camera_7",
+            "Camera_8",
+            "Camera_9",
+            "Camera_10",
+            "Camera_11",
+            "Camera_12",
+            "Camera_13",
+            "Camera_14",
+            "Camera_15",
+            "Camera_16",
+            "Camera_17",
+            "Camera_18",
+            "Camera_19",
         ],
         "eval": [
-            "Inter_8",
+            "Camera_20",
         ],
     },
 }
@@ -218,7 +210,7 @@ class BroadcaststyleDataParserConfig(DataParserConfig):
     """Depth maps to use. Default is full, but can also use field only."""
     depth_mask: Literal["none", "od", "od_below", "ist", "mask", "mask_below", "field"] = "mask"
     """Which depth maps mask to use."""
-    cam_split_setup: Literal["real", "real+opp", "low", "global", "all"] = "low"
+    cam_split_setup: Literal["real", "real+opp", "low", "global", "all"] = "all"
     """Which setup to use for train/eval split."""
     cap_box_floor: bool = False
     """Whether to use a rectangular scene box by setting floor to -0.01"""
