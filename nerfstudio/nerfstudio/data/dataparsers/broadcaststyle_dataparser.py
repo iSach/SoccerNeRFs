@@ -62,6 +62,14 @@ CAM_IDS = {
     "Camera_18": 17,
     "Camera_19": 18,
     "Camera_20": 19,
+    "global_1": 20,
+    "global_2": 21,
+    "global_3": 22,
+    "global_4": 23,
+    "global_5": 24,
+    "global_6": 25,
+    "global_7": 26,
+    "global_8": 27,
 }
 
 """
